@@ -20,11 +20,6 @@ jobs:
     - name: run containers
       run: cd Back && docker-compose up -d
 
-  test-back:
-
-    runs-on: ubuntu-latest
-
-    steps:
     - name: composer dependencies
       run: docker-compose exec -T php-app "composer install"
 
