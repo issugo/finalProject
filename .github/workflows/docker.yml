@@ -24,7 +24,7 @@ jobs:
       run: docker ps -a
 
     - name: composer dependencies
-      run: docker-compose exec -T php-app "composer install"
+      run: docker-compose exec php-app "composer install"
 
     - name: phpunit test
-      run: docker-compose exec -T php-app "php bin/phpunit"
+      run: docker-compose exec php-app "php bin/phpunit"
