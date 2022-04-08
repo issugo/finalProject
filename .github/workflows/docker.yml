@@ -1,0 +1,32 @@
+name: docker back test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: build compose file
+      run: cd Back && docker-compose build
+
+    - name: run containers
+      run: cd Back && docker-compose up -d
+
+  test-back:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: composer dependencies
+      run: docker-compose exec -T php-app "composer install"
+
+    - name: phpunit test
+      run: docker-compose exec -T php-app "php bin/phpunit"
