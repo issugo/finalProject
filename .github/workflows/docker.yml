@@ -19,6 +19,9 @@ jobs:
 
     - name: run containers
       run: cd Back && docker-compose up -d
+    
+    - name: test docker containers
+      run: docker ps -a
 
     - name: composer dependencies
       run: docker-compose exec -T php-app "composer install"
