@@ -22,9 +22,12 @@ jobs:
     
     - name: test docker containers
       run: docker ps -a
+    
+    - name: test volume
+      run: docker exec php-app ls
 
     - name: composer dependencies
-      run: docker-compose exec php-app "composer install"
+      run: docker exec php-app composer install
 
     - name: phpunit test
-      run: docker-compose exec php-app "php bin/phpunit"
+      run: docker exec php-app php bin/phpunit
