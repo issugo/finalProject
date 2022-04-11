@@ -1,7 +1,7 @@
 import {rest} from "msw";
 import {setupServer} from "msw/node";
 import { renderHook, act } from '@testing-library/react-hooks'
-import useCart from "../../hooks/useCart";
+import useProduct from "../../hooks/useProduct";
 
 const server = setupServer(
     rest.get(
@@ -31,38 +31,55 @@ const server = setupServer(
                             image: 'https://rickandmortyapi.com/api/character/avatar/15.jpeg'
                         }
                 ]}))}),
-    // remove
     );
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-    test("load cart", async () => {
-        const {result} = renderHook(() => useCart());
-        const {loading, loadCart} = result.current;
+    test("add product", async () =>
+    {
+        const {result} = renderHook(() => useProduct(3));
+        const {loading, addProduct} = result.current;
         expect(loading).toEqual(true);
         await act(async () => {
-            await loadCart()
+            await addProduct()
         });
-        const {products} = result.current;
-        console.log(products);
     });
 
-    test("remove product", async () => 
+    //add all tests
+
+    test("remove product", async () =>
     {
-        const {result} = renderHook(() => useCart());
-        const {loading, loadCart, removeProduct} = result.current;
+        const {result} = renderHook(() => useProduct(3));
+        const {loading, removeProduct} = result.current;
         expect(loading).toEqual(true);
         await act(async () => {
-            await loadCart()
+            await removeProduct()
         });
-        const {products} = result.current;
-        console.log(products);
-        await act(async () => {
-            await removeProduct(3)
-        });
-        const {products} = result.current;
-        console.log(products);
     });
+
+    test("update product", async () =>
+    {
+        const {result} = renderHook(() => useProduct(3));
+        const {loading, updateProduct} = result.current;
+        expect(loading).toEqual(true);
+        await act(async () => {
+            await updateProduct()
+        });
+    });
+
+    test("load product", async () =>
+    {
+        const {result} = renderHook(() => useProduct(3));
+        const {loading, loadProduct} = result.current;
+        expect(loading).toEqual(true);
+        await act(async () => {
+            await loadProduct()
+        });
+    });
+
+
+
+
 
