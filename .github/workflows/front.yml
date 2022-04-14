@@ -22,5 +22,5 @@ jobs:
     - name: Install dependencies
       run: cd Front && npm install
       
-    - name: Run test
-      run: cd Front && npm run test
+    - name: Run test with coverage
+      run: cd Front && npm run coverage
