@@ -18,7 +18,7 @@ jobs:
       run: cd Back && docker-compose build
 
     - name: run containers
-      run: DB_DATABASE=lesson_test && cd Back && docker-compose up -d
+      run: cd Back && docker-compose up -d
     
     - name: test docker containers
       run: docker ps -a
@@ -28,6 +28,9 @@ jobs:
 
     - name: composer dependencies
       run: docker exec php-app composer install
+
+    - name: create database
+      run: docker exec php-app php bin/console doctrine:migration:create --env=test
 
     - name: run migrations
       run: docker exec php-app php bin/console doctrine:migration:migrate --env=test
