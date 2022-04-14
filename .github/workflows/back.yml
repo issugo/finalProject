@@ -18,7 +18,7 @@ jobs:
       run: cd Back && docker-compose build
 
     - name: run containers
-      run: cd Back && docker-compose up -d
+      run: cd Back && docker-compose up -d -e DB_DATABASE=lesson_test
     
     - name: test docker containers
       run: docker ps -a
