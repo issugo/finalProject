@@ -5,45 +5,17 @@ import useProduct from "../../hooks/useProduct";
 
 const server = setupServer(
     rest.get(
-        "http://localhost:8000/api/products",
+        "http://localhost:8000/api/cart/3",
         (req, res, ctx) => {
             return res(
                 //Create mock of products
                 ctx.json([
-                    {
-                        id: 1,
-                        name: 'Rick',
-                        price: '20',
-                        quantity: 5,
-                        image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
-                    },
-                    {
-                        id: 2,
-                        name: 'Alien',
-                        price: '5',
-                        quantity: 25,
-                        image: 'https://rickandmortyapi.com/api/character/avatar/13.jpeg'
-                    },
                     {
                         id: 3,
                         name: 'Alien Morty',
                         price: '10',
                         quantity: 15,
                         image: 'https://rickandmortyapi.com/api/character/avatar/14.jpeg'
-                    },
-                    {
-                        id: 4,
-                        name: 'Summer Smith',
-                        price: '15',
-                        quantity: 5,
-                        image: 'https://rickandmortyapi.com/api/character/avatar/4.jpeg'
-                    },
-                    {
-                        id: 5,
-                        name: 'Alien Rick',
-                        price: '20',
-                        quantity: 20,
-                        image: 'https://rickandmortyapi.com/api/character/avatar/15.jpeg'
                     },
                 ]));
         }),
@@ -63,16 +35,13 @@ afterAll(() => server.close());
         });
     });
 
-    //add all tests
-
     test("remove product", async () =>
     {
         const {result} = renderHook(() => useProduct(3));
         const {loading, removeProduct} = result.current;
-        expect(loading).toEqual(true);
-        act(() => {
-            removeProduct()
-
+        expect(loading).toEqual(false);
+        await act(async () => {
+            await removeProduct()
         });
     });
 
@@ -80,7 +49,7 @@ afterAll(() => server.close());
     {
         const {result} = renderHook(() => useProduct(3));
         const {loading, modifyProduct} = result.current;
-        expect(loading).toEqual(true);
+        expect(loading).toEqual(false);
         await act(async () => {
             await modifyProduct()
         });
@@ -90,7 +59,7 @@ afterAll(() => server.close());
     {
         const {result} = renderHook(() => useProduct(3));
         const {loading, loadProduct} = result.current;
-        expect(loading).toEqual(true);
+        expect(loading).toEqual(false);
         await act(async () => {
             await loadProduct()
         });
