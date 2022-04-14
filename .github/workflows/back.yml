@@ -30,10 +30,10 @@ jobs:
       run: docker exec php-app composer install
 
     - name: run migrations
-      run: docker exec php-app php bin/console doctrine:migration:migrate
+      run: docker exec php-app php bin/console doctrine:migration:migrate --env=test
 
     - name: run fixtures
-      run: docker exec php-app php bin/console doctrine:fixtures:load -n
+      run: docker exec php-app php bin/console doctrine:fixtures:load -n --env=test
 
     - name: phpunit test
       run: docker exec -e XDEBUG_MODE=coverage php-app vendor/bin/phpunit --coverage-text
