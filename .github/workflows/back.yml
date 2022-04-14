@@ -33,7 +33,7 @@ jobs:
       run: docker exec php-app php bin/console doctrine:migration:migrate
 
     - name: run fixtures
-      run: php bin/console doctrine:fixtures:load -n
+      run: docker exec php-app php bin/console doctrine:fixtures:load -n
 
     - name: phpunit test
       run: docker exec -e XDEBUG_MODE=coverage php-app vendor/bin/phpunit --coverage-text
