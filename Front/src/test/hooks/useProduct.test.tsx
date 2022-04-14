@@ -69,7 +69,6 @@ afterAll(() => server.close());
 
     test("add product", async () =>
     {
-        
         const {result} = renderHook(() => useProduct({
             id: 3,
             name: 'Alien Morty',
