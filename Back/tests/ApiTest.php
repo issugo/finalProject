@@ -38,7 +38,7 @@ class ApiTest extends WebTestCase
     public function testAddToMuchProductToCart(): void
     {
         $client = static::createClient();
-        $client->jsonRequest('POST', '/api/cart/3', ["quantity" => "30"]);
+        $client->jsonRequest('POST', '/api/cart/3', ["quantity" => "100"]);
         $response = $client->getResponse();
         $this->assertEquals(json_encode(["error" => "too many"]), $response->getContent());
     }
