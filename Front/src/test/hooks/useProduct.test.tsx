@@ -84,6 +84,12 @@ afterAll(() => server.close());
             expect(message).toEqual("Enregistré dans le panier")
             })
         })
+        act(() => {
+            addProduct().then((data) => {
+            expect(data).toBe(false);
+            expect(message).toEqual("Quantité trop élevée")
+            })
+        })
     });
 
     test("remove product", async () =>

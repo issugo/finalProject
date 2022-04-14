@@ -40,32 +40,12 @@ const useCart = () => {
     });
   };
 
-  //removeAllToCart
-  const removeAllToCart = () => {
-    return new Promise((resolve) => {
-      setLoading(true);
-      fetch(`${endpoint}/cart/products`, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "DELETE",
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          setMessage("Panier bien vidé");
-          loadCart().then(resolve);
-        });
-    });
-  };
-
   return {
     loading,
     products,
     message,
     loadCart,
-    removeToCart,
-    removeAllToCart
+    removeToCart
   };
 };
 
