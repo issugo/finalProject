@@ -6,7 +6,7 @@ const useProduct = (product: Product) => {
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  
+
   const addProduct = () => {
     return new Promise((resolve) => {
       setLoading(true);

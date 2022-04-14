@@ -69,7 +69,6 @@ afterAll(() => server.close());
 
     test("add product", async () =>
     {
-        
         const {result} = renderHook(() => useProduct({
             id: 3,
             name: 'Alien Morty',
@@ -83,6 +82,12 @@ afterAll(() => server.close());
             addProduct().then((data) => {
             expect(data).toBe(true);
             expect(message).toEqual("Enregistré dans le panier")
+            })
+        })
+        act(() => {
+            addProduct().then((data) => {
+            expect(data).toBe(false);
+            expect(message).toEqual("Quantité trop élevée")
             })
         })
     });
