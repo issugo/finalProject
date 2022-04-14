@@ -83,13 +83,9 @@ const useProduct = (product: Product) => {
   const loadProduct = () => {
     return new Promise((resolve) => {
       setLoading(true);
-      fetch(`${endpoint}/cart/${product.id}`) , {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "GET",
-      }
+      fetch(`${endpoint}/cart/${product.id}`)
+        //headers
+        
         .then((res) => res.json())
         .then((res) => {
           if (res.error) {
