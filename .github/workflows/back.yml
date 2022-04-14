@@ -30,7 +30,7 @@ jobs:
       run: docker exec php-app composer install
 
     - name: create database
-      run: docker exec php-app php bin/console doctrine:migration:create --env=test
+      run: docker exec php-app php bin/console doctrine:database:create --env=test
 
     - name: run migrations
       run: docker exec php-app php bin/console doctrine:migration:migrate --env=test
