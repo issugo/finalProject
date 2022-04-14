@@ -95,7 +95,19 @@ class ApiTest extends WebTestCase
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
         $this->assertEquals(20, sizeof($responseData));
-        $this->assertNotEquals("voila", $responseData[20]["name"]);
+        $this->assertNotEquals("voila", $responseData[19]["name"]);
+    }
+
+    public function testFirstAddProductToCart(): void
+    {
+        $client = static::createClient();
+        $client->jsonRequest('POST', '/api/cart/3', ["quantity" => "1"]);
+        $response = $client->getResponse();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->getContent());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals(1, sizeof($responseData["products"]));
+        //$this->assertEquals(1, $responseData["products"][0]["quantity"]);
     }
 
     public function testCart(): void
@@ -107,7 +119,7 @@ class ApiTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(0, sizeof($responseData["products"]));
+        $this->assertEquals(1, sizeof($responseData["products"]));
     }
 
     public function testAddProductToCart(): void
@@ -118,7 +130,7 @@ class ApiTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(1, sizeof($responseData["products"]));
+        $this->assertEquals(2, sizeof($responseData["products"]));
         //$this->assertEquals(1, $responseData["products"][0]["quantity"]);
     }
 
@@ -131,7 +143,7 @@ class ApiTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(1, sizeof($responseData["products"]));
+        $this->assertEquals(2, sizeof($responseData["products"]));
     }
 
     public function testAddToMuchProductToCart(): void
@@ -150,7 +162,7 @@ class ApiTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(0, sizeof($responseData["products"]));
+        $this->assertEquals(1, sizeof($responseData["products"]));
     }
 
     public function testCartAfterDeleteingProduct(): void
@@ -162,6 +174,6 @@ class ApiTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(0, sizeof($responseData["products"]));
+        $this->assertEquals(1, sizeof($responseData["products"]));
     }
 }
