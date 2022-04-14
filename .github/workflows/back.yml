@@ -30,4 +30,4 @@ jobs:
       run: docker exec php-app composer install
 
     - name: phpunit test
-      run: docker exec php-app XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text
+      run: docker exec -e XDEBUG_MODE=coverage php-app vendor/bin/phpunit --coverage-text
