@@ -40,20 +40,20 @@ test('product functionnal', () => {
     } }/>, container);
 });
 
-//test functionnal for App component
-test('app functionnal', () => {
-    ReactDOM.render(<App />, container);
-});
+// //test functionnal for App component
+// test('app functionnal', () => {
+//     ReactDOM.render(<App />, container);
+// });
 
-//test functionnal for App component routes
-test('app functionnal routes', () => {
-    ReactDOM.render(<App />, container);
-    const home = screen.getByText(/home/i);
-    const product = screen.getByText(/product/i);
-    const cart = screen.getByText(/cart/i);
-    expect(home).toBeInTheDocument();
-    expect(product).toBeInTheDocument();
-    expect(cart).toBeInTheDocument();
-});
+// //test functionnal for App component routes
+// test('app functionnal routes', () => {
+//     ReactDOM.render(<App />, container);
+//     const home = screen.getByText(/home/i);
+//     const product = screen.getByText(/product/i);
+//     const cart = screen.getByText(/cart/i);
+//     expect(home).toBeInTheDocument();
+//     expect(product).toBeInTheDocument();
+//     expect(cart).toBeInTheDocument();
+// });
 
 

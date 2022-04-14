@@ -33,10 +33,13 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v1
-      
+  
+    - name: Install dependencies
+      run: cd Front && npm install
+
     - name: Run blog test
       uses: cypress-io/github-action@v1
       with:
-        start: npm start
+        start: cd Front && npm start
         wait-on: 'http://localhost:3000'
         config: baseUrl=https://localhost:3000
