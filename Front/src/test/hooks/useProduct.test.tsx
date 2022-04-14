@@ -21,6 +21,45 @@ const server = setupServer(
                     }
                 ])
         )}
+    ),
+    rest.get(
+        "http://localhost:8000/api/cart/3",
+        (req, res, ctx) => {
+            return res(
+                ctx.json([
+                    {
+                        id: 3,
+                        name: 'Alien Morty',
+                        price: '20',
+                        quantity: 1,
+                        image: 'https://rickandmortyapi.com/api/character/avatar/14.jpeg'
+                    }
+                ])
+        )}
+    ),
+    rest.put(
+        "http://localhost:8000/api/cart/3",
+        (req, res, ctx) => {
+            return res(
+                ctx.json([
+                    {
+                        id: 3,
+                        name: 'Alien Morty',
+                        price: '20',
+                        quantity: 10,
+                        image: 'https://rickandmortyapi.com/api/character/avatar/14.jpeg'
+                    }
+                ])
+        )}
+    ),
+    rest.delete(
+        "http://localhost:8000/api/cart/3",
+        (req, res, ctx) => {
+            return res(
+                ctx.json([
+
+                ])
+        )}
     )
 );
 
@@ -40,44 +79,69 @@ afterAll(() => server.close());
         }));
         const {loading, addProduct, message} = result.current;
         expect(loading).toEqual(false);
-        addProduct().then((data) => {
+        act(() => {
+            addProduct().then((data) => {
             expect(data).toBe(true);
             expect(message).toEqual("Enregistré dans le panier")
+            })
         })
-        
     });
-
-    //add all tests
 
     test("remove product", async () =>
     {
-        const {result} = renderHook(() => useProduct(3));
-        const {loading, removeProduct} = result.current;
-        expect(loading).toEqual(true);
+        const {result} = renderHook(() => useProduct({
+            id: 3,
+            name: 'Alien Morty',
+            price: '10',
+            quantity: 1,
+            image: 'https://rickandmortyapi.com/api/character/avatar/14.jpeg'
+        }));
+        const {loading, removeProduct, message} = result.current;
+        expect(loading).toEqual(false);
         act(() => {
-            removeProduct()
-
-        });
+            removeProduct().then((data) => {
+            expect(data).toBe(true);
+            expect(message).toEqual("Produit supprimé du panier")
+            })
+        })
     });
 
     test("update product", async () =>
     {
-        const {result} = renderHook(() => useProduct(3));
-        const {loading, modifyProduct} = result.current;
-        expect(loading).toEqual(true);
-        await act(async () => {
-            await modifyProduct()
-        });
+        const {result} = renderHook(() => useProduct({
+            id: 3,
+            name: 'Alien Morty',
+            price: '10',
+            quantity: 10,
+            image: 'https://rickandmortyapi.com/api/character/avatar/14.jpeg'
+        }));
+        const {loading, modifyProduct, message} = result.current;
+        expect(loading).toEqual(false);
+        act(() => {
+            modifyProduct().then((data) => {
+            expect(data).toBe(true);
+            expect(message).toEqual("Produit modifié dans le panier")
+            })
+        })
     });
 
     test("load product", async () =>
     {
-        const {result} = renderHook(() => useProduct(3));
-        const {loading, loadProduct} = result.current;
-        expect(loading).toEqual(true);
-        await act(async () => {
-            await loadProduct()
-        });
+        const {result} = renderHook(() => useProduct({
+            id: 3,
+            name: 'Alien Morty',
+            price: '10',
+            quantity: 10,
+            image: 'https://rickandmortyapi.com/api/character/avatar/14.jpeg'
+        }));
+        const {loading, loadProduct, message} = result.current;
+        expect(loading).toEqual(false);
+        act(() => {
+            loadProduct().then((data) => {
+            expect(data).toBe(true);
+            expect(message).toEqual(result.current.quantity)
+            })
+        })
     });
 
 

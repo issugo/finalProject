@@ -45,7 +45,7 @@ const useCart = () => {
     products,
     message,
     loadCart,
-    removeToCart,
+    removeToCart
   };
 };
 

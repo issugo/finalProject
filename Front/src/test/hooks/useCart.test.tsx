@@ -4,6 +4,8 @@ import {setupServer} from "msw/node";
 import { renderHook, act } from '@testing-library/react-hooks'
 import useCart from "../../hooks/useCart";
 
+jest.setTimeout(15000)
+
 const server = setupServer(
     rest.get(
         "http://localhost:8000/api/cart",
@@ -19,11 +21,11 @@ const server = setupServer(
                             image: 'https://rickandmortyapi.com/api/character/avatar/3.jpeg'
                         },
                         {
-                            id: 15,
-                            name: 'Alien Rick',
-                            price: '20',
-                            quantity: 20,
-                            image: 'https://rickandmortyapi.com/api/character/avatar/15.jpeg'
+                            id: 13,
+                            name: 'Alien Goohah',
+                            price: '13',
+                            quantity: 10,
+                            image: 'https://rickandmortyapi.com/api/character/avatar/13.jpeg'
                         },
                         {
                             id: 15,

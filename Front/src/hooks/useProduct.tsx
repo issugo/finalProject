@@ -5,6 +5,8 @@ const useProduct = (product: Product) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  
   const addProduct = () => {
     return new Promise((resolve) => {
       setLoading(true);
@@ -44,9 +46,9 @@ const useProduct = (product: Product) => {
         .then((res) => res.json())
         .then((res) => {
           if (res.error) {
-            setMessage("Trop de quantité");
+            setMessage("Erreur lors de la suppression du produit");
           } else {
-            setMessage("Enregistré dans le panier");
+            setMessage("Produit supprimé du panier");
           }
           setLoading(false);
           resolve(true);
@@ -71,7 +73,7 @@ const useProduct = (product: Product) => {
           if (res.error) {
             setMessage("Trop de quantité");
           } else {
-            setMessage("Enregistré dans le panier");
+            setMessage("Produit modifié dans le panier");
           }
           setLoading(false);
           resolve(true);
@@ -83,9 +85,13 @@ const useProduct = (product: Product) => {
   const loadProduct = () => {
     return new Promise((resolve) => {
       setLoading(true);
-      fetch(`${endpoint}/cart/${product.id}`)
-        //headers
-        
+      fetch(`${endpoint}/cart/${product.id}`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+        })
         .then((res) => res.json())
         .then((res) => {
           if (res.error) {
