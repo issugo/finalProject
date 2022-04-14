@@ -26,21 +26,13 @@ jobs:
       run: cd Front && npm run coverage
   
   cypress-run:
-
     runs-on: ubuntu-latest
-
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Checkout
-      uses: actions/checkout@v2
-  
-    - name: Install dependencies
-      run: cd Front && npm install
-
-    - name: Run test
-      uses: cypress-io/github-action@v2
-      with:
-        install-command: cd Front
-        start: npm start
-        wait-on: 'http://localhost:3000'
-        config: baseUrl=https://localhost:3000
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          build: npm run build
+          start: npm start
