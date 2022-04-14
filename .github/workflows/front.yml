@@ -40,7 +40,7 @@ jobs:
     - name: Run test
       uses: cypress-io/github-action@v2
       with:
-        run: cd Front
+        install-command: cd Front
         start: npm start
         wait-on: 'http://localhost:3000'
         config: baseUrl=https://localhost:3000
