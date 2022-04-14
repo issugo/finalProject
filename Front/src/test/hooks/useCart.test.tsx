@@ -46,18 +46,18 @@ const server = setupServer(
                     ctx.json({
                         products: [
                             {
-                                id: 15,
-                                name: 'Alien Rick',
-                                price: '20',
-                                quantity: 20,
-                                image: 'https://rickandmortyapi.com/api/character/avatar/15.jpeg'
+                            	id: 13,
+                            	name: 'Alien Goohah',
+                            	price: '13',
+                            	quantity: 10,
+                            	image: 'https://rickandmortyapi.com/api/character/avatar/13.jpeg'
                             },
                             {
-                                id: 15,
-                                name: 'Alien Rick',
+                                id: 14,
+                                name: 'Alien Morty',
                                 price: '20',
                                 quantity: 20,
-                                image: 'https://rickandmortyapi.com/api/character/avatar/15.jpeg'
+                                image: 'https://rickandmortyapi.com/api/character/avatar/14.jpeg'
                             }
                         ]
                     })
