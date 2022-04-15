@@ -1,6 +1,6 @@
 import useProduct from "../hooks/useProduct";
 
-const Product = ({ setRoute, data: product }: any) => {
+const Product = ({setRoute, data: product}: any) => {
   const { quantity, message, loading, setQuantity, addProduct } =
     useProduct(product);
 
@@ -12,8 +12,8 @@ const Product = ({ setRoute, data: product }: any) => {
       <div>
         <div>
           <img src={product.image} alt="" />
-          <p>Figurine de {product.name}</p>
-          <p>Quantitée {product.quantity}</p>
+          <p data-testid="name">Figurine de {product.name}</p>
+          <p data-testid="quantity">Quantitée {product.quantity}</p>
         </div>
       </div>
       <hr />

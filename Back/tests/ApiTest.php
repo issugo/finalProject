@@ -2,10 +2,15 @@
 
 namespace App\Tests;
 
+use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ApiTest extends WebTestCase
 {
+
+    private $product;
+    private $id;
+
     public function testApi(): void
     {
         $client = static::createClient();
@@ -18,33 +23,32 @@ class ApiTest extends WebTestCase
         $this->assertEquals(['message' => "Hello world"], $responseData);
     }
 
-    public function testGetAllProducts(): void
-    {
-        $client = static::createClient();
-        // Request a specific page
-        $client->jsonRequest('GET', '/api/products');
-        $response = $client->getResponse();
-        $this->assertResponseIsSuccessful();
-        $this->assertJson($response->getContent());
-        $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(20, sizeof($responseData));
-    }
-
     public function testAddProduct(): void
     {
+        //create a product
+        $this->product = new Product();
+        $this->product->setName("Rick");
+        $this->product->setPrice(8);
+        $this->product->setQuantity(20);
+        $this->product->setImage("rick.png");
+
+        //add product to db
         $client = static::createClient();
         $client->jsonRequest('POST', '/api/products', [
-            "name" => "voila",
-            "price" => 100,
-            "quantity" => 50,
-            "image" => "test image"
+            "name" => $this->product->getName(),
+            "price" => $this->product->getPrice(),
+            "quantity" => $this->product->getQuantity(),
+            "image" => $this->product->getImage()
         ]);
         $response = $client->getResponse();
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals("voila", $responseData["name"]);
-        $this->assertEquals(100, $responseData["price"]);
+        $this->assertEquals("Rick", $responseData["name"]);
+        $this->assertEquals(8, $responseData["price"]);
+        $this->assertEquals(20, $responseData["quantity"]);
+        $this->assertEquals("rick.png", $responseData["image"]);
+        $this->id = $responseData["id"];
     }
 
     public function testGetAllProductsAfterAddingOne(): void
@@ -56,52 +60,27 @@ class ApiTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(21, sizeof($responseData));
-        $this->assertEquals("voila", $responseData[20]["name"]);
+        $this->assertEquals(1, sizeof($responseData));
+        $this->assertEquals("rick", $responseData[$this->id - 1]["name"]);
     }
 
     public function testGetOneProduct(): void
     {
         $client = static::createClient();
         // Request a specific page
-        $client->jsonRequest('GET', '/api/products/21');
+        $client->jsonRequest('GET', '/api/products/' . $this->id);
         $response = $client->getResponse();
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals("voila", $responseData["name"]);
-        $this->assertEquals(100, $responseData["price"]);
+        $this->assertEquals("rick", $responseData["name"]);
+        $this->assertEquals(8, $responseData["price"]);
     }
 
-    public function testDeleteProduct(): void
+    public function testAddProductToCart(): void
     {
         $client = static::createClient();
-        // Request a specific page
-        $client->jsonRequest('DELETE', '/api/products/21');
-        $response = $client->getResponse();
-        $this->assertResponseIsSuccessful();
-        $this->assertJson($response->getContent());
-        $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(['delete' => 'ok'], $responseData);
-    }
-
-    public function testGetAllProductsAfterDeletion(): void
-    {
-        $client = static::createClient();
-        // Request a specific page
-        $client->jsonRequest('GET', '/api/products');
-        $response = $client->getResponse();
-        $this->assertResponseIsSuccessful();
-        $this->assertJson($response->getContent());
-        $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(20, sizeof($responseData));
-        $this->assertNotEquals("voila", $responseData[19]["name"]);
-    }
-
-    public function testFirstAddProductToCart(): void
-    {
-        $client = static::createClient();
-        $client->jsonRequest('POST', '/api/cart/3', ["quantity" => "1"]);
+        $client->jsonRequest('POST', '/api/cart/' . $this->id, ["quantity" => "2"]);
         $response = $client->getResponse();
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
@@ -122,34 +101,10 @@ class ApiTest extends WebTestCase
         $this->assertEquals(1, sizeof($responseData["products"]));
     }
 
-    public function testAddProductToCart(): void
-    {
-        $client = static::createClient();
-        $client->jsonRequest('POST', '/api/cart/3', ["quantity" => "1"]);
-        $response = $client->getResponse();
-        $this->assertResponseIsSuccessful();
-        $this->assertJson($response->getContent());
-        $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(2, sizeof($responseData["products"]));
-        //$this->assertEquals(1, $responseData["products"][0]["quantity"]);
-    }
-
-    public function testCartAfterAddingProduct(): void
-    {
-        $client = static::createClient();
-        // Request a specific page
-        $client->jsonRequest('GET', '/api/cart');
-        $response = $client->getResponse();
-        $this->assertResponseIsSuccessful();
-        $this->assertJson($response->getContent());
-        $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(2, sizeof($responseData["products"]));
-    }
-
     public function testAddToMuchProductToCart(): void
     {
         $client = static::createClient();
-        $client->jsonRequest('POST', '/api/cart/3', ["quantity" => "100"]);
+        $client->jsonRequest('POST', '/api/cart/' . $this->id, ["quantity" => "100"]);
         $response = $client->getResponse();
         $this->assertEquals(json_encode(["error" => "too many"]), $response->getContent());
     }
@@ -157,12 +112,12 @@ class ApiTest extends WebTestCase
     public function testDeleteProductFromCart(): void
     {
         $client = static::createClient();
-        $client->jsonRequest('DELETE', '/api/cart/3');
+        $client->jsonRequest('DELETE', '/api/cart/' . $this->id);
         $response = $client->getResponse();
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(1, sizeof($responseData["products"]));
+        $this->assertEquals(0, sizeof($responseData["products"]));
     }
 
     public function testCartAfterDeleteingProduct(): void
@@ -174,6 +129,29 @@ class ApiTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJson($response->getContent());
         $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals(1, sizeof($responseData["products"]));
+        $this->assertEquals(0, sizeof($responseData["products"]));
+    }
+    public function testDeleteProduct(): void
+    {
+        $client = static::createClient();
+        // Request a specific page
+        $client->jsonRequest('DELETE', '/api/products/' . $this->id);
+        $response = $client->getResponse();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->getContent());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals(['delete' => 'ok'], $responseData);
+    }
+
+    public function testGetAllProductsAfterDeletion(): void
+    {
+        $client = static::createClient();
+        // Request a specific page
+        $client->jsonRequest('GET', '/api/products');
+        $response = $client->getResponse();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->getContent());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals(0, sizeof($responseData));
     }
 }
