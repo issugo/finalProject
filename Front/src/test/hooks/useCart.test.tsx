@@ -28,11 +28,11 @@ const server = setupServer(
                             image: 'https://rickandmortyapi.com/api/character/avatar/13.jpeg'
                         },
                         {
-                            id: 15,
-                            name: 'Alien Rick',
+                            id: 14,
+                            name: 'Alien Morty',
                             price: '20',
                             quantity: 20,
-                            image: 'https://rickandmortyapi.com/api/character/avatar/15.jpeg'
+                            image: 'https://rickandmortyapi.com/api/character/avatar/14.jpeg'
                         }
                     ]
                 })
@@ -40,7 +40,7 @@ const server = setupServer(
         }),
 
         rest.delete(
-            "http://localhost:8000/api/cart/3",
+            "http://localhost:8000/api/cart/13",
             (req, res, ctx) => {
                 return res(
                     ctx.json({
@@ -52,13 +52,6 @@ const server = setupServer(
                             	quantity: 10,
                             	image: 'https://rickandmortyapi.com/api/character/avatar/13.jpeg'
                             },
-                            {
-                                id: 14,
-                                name: 'Alien Morty',
-                                price: '20',
-                                quantity: 20,
-                                image: 'https://rickandmortyapi.com/api/character/avatar/14.jpeg'
-                            }
                         ]
                     })
                 )
@@ -94,11 +87,11 @@ afterAll(() => server.close());
         const {loading, removeToCart, message} = result.current;
         expect(loading).toEqual(true);
         removeToCart({
-            id: 3,
-            name: 'Summer Smith',
-            price: '15',
-            quantity: 5,
-            image: 'https://rickandmortyapi.com/api/character/avatar/3.jpeg'
+            id: 13,
+            name: 'Alien Goohah',
+            price: '13',
+            quantity: 10,
+            image: 'https://rickandmortyapi.com/api/character/avatar/13.jpeg'
         }).then((data) => {
             expect(data).toBe(true);
             expect(message).toEqual("Produit bien supprimé");
