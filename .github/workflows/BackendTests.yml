@@ -1,4 +1,4 @@
-name: docker back test
+name: BackendTests
 
 on:
   push:
