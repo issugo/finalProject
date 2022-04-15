@@ -19,4 +19,6 @@ jobs:
           working-directory: ./Front
           browser: chrome
           headless: true
-          build: npx cypress info
+          start: npm start
+          wait-on: 'http://localhost:3000/'
+          config: baseUrl=http://localhost:3000/
